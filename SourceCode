@@ -1,0 +1,90 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Rechner
+{
+    public partial class Form1 : Form
+    {
+        int Zufallszahl1;
+        int Zufallszahl2;
+
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void btn_Addition_Click(object sender, EventArgs e) // Normale Addition
+        {
+            int Ergebnis = Zufallszahl1 + Zufallszahl2;
+            lbl_Ergebnis.Text = Ergebnis.ToString();
+        }
+
+        private void btn_Subtraktion_Click(object sender, EventArgs e) // Normale Subtraktion
+        {
+            int Ergebnis = Zufallszahl1 - Zufallszahl2;
+            lbl_Ergebnis.Text = Ergebnis.ToString();
+        }
+
+        private void btn_Multiplikation_Click(object sender, EventArgs e) // Normale Multiplikation
+        {
+            int Ergebnis = Zufallszahl1 * Zufallszahl2;
+            lbl_Ergebnis.Text = Ergebnis.ToString();
+        }
+
+        private void btn_Division_Click(object sender, EventArgs e) // % ist der Modulo Operatoer, welches den Rest ausrechnet
+        {
+            int Quotient = Zufallszahl1 / Zufallszahl2;
+            int Rest = Zufallszahl1 % Zufallszahl2;
+            string Ergebnis = Quotient + " Rest:" + Rest;
+            lbl_Ergebnis.Text = Ergebnis.ToString();
+        }
+
+        public void Zufallsgenerator() // Die Variable ZufallsZahlMaximum und ZufallsZahlMinimum bestimmen die random zahlen und danach werden zufällig zahlen generiert
+        {
+            int ZufallsZahlMaximum;
+            ZufallsZahlMaximum = Convert.ToInt32(txt_Maximum.Text);
+            int ZufallsZahlMinimum;
+            ZufallsZahlMinimum = Convert.ToInt32(txt_Minimum.Text);
+            Random Zufall = new Random();
+            Zufallszahl1 = Zufall.Next(ZufallsZahlMinimum, ZufallsZahlMaximum);
+            lbl_Zahl1.Text = "Zufallszahl 1 = " + Zufallszahl1.ToString();
+            Zufallszahl2 = Zufall.Next(ZufallsZahlMinimum, ZufallsZahlMaximum);
+            lbl_Zahl2.Text = "Zufallszahl 2 = " + Zufallszahl2.ToString();
+        }
+
+        private void btn_NummerGeneration_Click(object sender, EventArgs e)
+        {
+            Zufallsgenerator();
+            lbl_Ergebnis.Text = " Ergebnis ";
+            btn_Addition.Visible = true;  // Die Operatoren werden erst sichtbar wenn die Zahlen generiert sind, sonst stürzt das Programm beim Modulo anzeigen ab
+            btn_Division.Visible = true;
+            btn_Multiplikation.Visible = true;
+            btn_Subtraktion.Visible = true;
+        }
+
+        private void txt_Maximum_KeyPress(object sender, KeyPressEventArgs e) // Sorgt dafür das in der Textbox nur Zahlen eingegeben werden können
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+
+        }
+
+        private void txt_Minimum_KeyPress(object sender, KeyPressEventArgs e) // Sorgt dafür das in der Textbox nur Zahlen eingegeben werden können
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+
+        }
+    }
+}
