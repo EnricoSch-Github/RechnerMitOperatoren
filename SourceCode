@@ -1,13 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
 namespace Rechner
 {
     public partial class Form1 : Form
@@ -48,15 +38,28 @@ namespace Rechner
 
         public void Zufallsgenerator() // Die Variable ZufallsZahlMaximum und ZufallsZahlMinimum bestimmen die random zahlen und danach werden zufällig zahlen generiert
         {
+            
             int ZufallsZahlMaximum;
             ZufallsZahlMaximum = Convert.ToInt32(txt_Maximum.Text);
             int ZufallsZahlMinimum;
             ZufallsZahlMinimum = Convert.ToInt32(txt_Minimum.Text);
-            Random Zufall = new Random();
-            Zufallszahl1 = Zufall.Next(ZufallsZahlMinimum, ZufallsZahlMaximum);
-            lbl_Zahl1.Text = "Zufallszahl 1 = " + Zufallszahl1.ToString();
-            Zufallszahl2 = Zufall.Next(ZufallsZahlMinimum, ZufallsZahlMaximum);
-            lbl_Zahl2.Text = "Zufallszahl 2 = " + Zufallszahl2.ToString();
+            if (ZufallsZahlMaximum < ZufallsZahlMinimum)
+            {
+                btn_Division.Enabled = false;
+                btn_Multiplikation.Enabled = false;
+                btn_Subtraktion.Enabled = false;
+                btn_Addition.Enabled = false;
+                lbl_Warnung.Visible = true;
+            }
+            else
+            {
+                Random Zufall = new Random();
+                Zufallszahl1 = Zufall.Next(ZufallsZahlMinimum, ZufallsZahlMaximum);
+                lbl_Zahl1.Text = "Zufallszahl 1 = " + Zufallszahl1.ToString();
+                Zufallszahl2 = Zufall.Next(ZufallsZahlMinimum, ZufallsZahlMaximum);
+                lbl_Zahl2.Text = "Zufallszahl 2 = " + Zufallszahl2.ToString();
+            }
+
         }
 
         private void btn_NummerGeneration_Click(object sender, EventArgs e)
@@ -67,11 +70,17 @@ namespace Rechner
             btn_Division.Visible = true;
             btn_Multiplikation.Visible = true;
             btn_Subtraktion.Visible = true;
+
         }
 
         private void txt_Maximum_KeyPress(object sender, KeyPressEventArgs e) // Sorgt dafür das in der Textbox nur Zahlen eingegeben werden können
         {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != 'é'))
+            {
+                e.Handled = true;
+            }
+
+            if ((e.KeyChar == 'é') && ((sender as TextBox).Text.IndexOf('é') > -1)) // Sorgt dafür das keine kommazahlen verwendet werden können
             {
                 e.Handled = true;
             }
@@ -80,11 +89,15 @@ namespace Rechner
 
         private void txt_Minimum_KeyPress(object sender, KeyPressEventArgs e) // Sorgt dafür das in der Textbox nur Zahlen eingegeben werden können
         {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != 'é'))
             {
                 e.Handled = true;
             }
 
+            if ((e.KeyChar == 'é') && ((sender as TextBox).Text.IndexOf('é') > -1)) // Sorgt dafür das keine kommazahlen verwendet werden können
+            {
+                e.Handled = true;
+            }
         }
     }
 }
